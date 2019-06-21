@@ -1,7 +1,10 @@
 "-----Plugins-----"
 call plug#begin('~/.vim/plugged')
 
-"Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'zchee/deoplete-go', { 'for': 'go', 'do': 'make' }
+Plug 'fishbullet/deoplete-ruby', { 'for': 'ruby' }
+"Plug 'uplus/deoplete-solargraph', { 'for': 'ruby' }
 "Plug 'pbogut/deoplete-padawan', { 'for': ['php', 'html.twig'] }
 "Plug 'arnaud-lb/vim-php-namespace', { 'for': ['php'] }
 "Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern', 'for': ['javascript', 'javascript.jsx'] }
@@ -16,47 +19,61 @@ Plug 'junegunn/fzf.vim'
 Plug 'morhetz/gruvbox'
 "Plug 'neomake/neomake'
 "Plug 'jaawerth/neomake-local-eslint-first', { 'for': ['javascript', 'javascript.jsx'] }
-Plug 'flowtype/vim-flow', { 'for': ['javascript', 'javascript.jsx'] }
+"Plug 'flowtype/vim-flow', { 'for': ['javascript', 'javascript.jsx'] }
 Plug 'raimondi/delimitmate'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
-Plug 'sheerun/vim-polyglot'
 Plug 'stephpy/vim-php-cs-fixer', { 'for': 'php' }
 Plug 'tpope/vim-surround'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+"Plug 'vim-airline/vim-airline'
+"Plug 'vim-airline/vim-airline-themes'
+Plug 'itchyny/lightline.vim'
 Plug 'flazz/vim-colorschemes'
-"Plug 'mxw/vim-jsx', { 'for': ['jsx'] }
+Plug 'mxw/vim-jsx', { 'for': ['javascript.jsx'] }
 Plug 'beyondwords/vim-twig', { 'for': 'html.twig' }
 Plug 'ekalinin/Dockerfile.vim', {'for' : 'Dockerfile'}
 Plug 'elzr/vim-json', {'for' : 'json'}
 Plug 'cespare/vim-toml'
 Plug 'fatih/vim-nginx' , {'for' : 'nginx'}
 Plug 'plasticboy/vim-markdown'
+Plug 'JamshedVesuna/vim-markdown-preview'
 Plug 'tmux-plugins/vim-tmux', {'for': 'tmux'}
 Plug 'kassio/neoterm'
 Plug 'alvan/vim-closetag'
-Plug 'fatih/vim-go', { 'for': 'go' }
+Plug 'fatih/vim-go', { 'for': 'go', 'do': ':GoUpdateBinaries' }
 Plug 'mileszs/ack.vim'
 Plug 'sebdah/vim-delve', { 'for': 'go' }
+Plug 'sheerun/vim-polyglot'
 
 Plug 'w0rp/ale'
-Plug 'roxma/nvim-completion-manager'
+"Plug 'roxma/nvim-yarp'
+"Plug 'ncm2/ncm2'
+"Plug 'roxma/nvim-completion-manager'
 "Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
 "Plug 'roxma/LanguageServer-php-neovim',  {'do': 'composer install && composer run-script parse-stubs', 'for': 'php' }
 "autocmd FileType php LanguageClientStart
+
+Plug 'vim-ruby/vim-ruby', { 'for': ['ruby', 'haml', 'eruby'] }
+Plug 'tpope/vim-rake', { 'for': 'ruby' }
+Plug 'tpope/vim-rails', { 'for': ['ruby', 'eruby', 'haml', 'coffee', 'javascript'] }
+Plug 'tpope/vim-rbenv', { 'for': 'ruby' }
+Plug 'tpope/vim-bundler', { 'for': 'ruby' }
+Plug 'Keithbsmiley/rspec.vim', { 'for': 'ruby' }
+Plug 'thoughtbot/vim-rspec', { 'for': 'ruby' }
+Plug 'kana/vim-textobj-user', { 'for': 'ruby' }
+Plug 'nelstrom/vim-textobj-rubyblock', { 'for': 'ruby' }
 
 call plug#end()
 
 
 "-----Theme-----"
-set termguicolors
+"set termguicolors
 "colorscheme busierbee
 "colorscheme wombat256
 colorscheme gruvbox
 let g:gruvbox_italic=1
 set background=dark
-"let g:gruvbox_contrast_dark = 'soft'
+let g:gruvbox_contrast_dark = 'soft'
 
 
 "-----Vim-Config-----"
@@ -93,7 +110,6 @@ set noshowmatch              " Do not show matching brackets by flickering
 set noshowmode               " We show the mode with airline or lightline
 set ignorecase               " Search case insensitive...
 set smartcase                " ... but not it begins with upper case
-set completeopt=menu,menuone
 set nocursorcolumn           " speed up syntax highlighting
 set nocursorline
 set updatetime=300
@@ -116,7 +132,7 @@ set smartindent
 set smarttab
 set foldmethod=indent
 set foldlevel=99
-set completeopt=longest,menuone,preview
+set completeopt-=preview
 set showmode
 let mapleader=','
 
@@ -189,11 +205,20 @@ command! Qt tabclose
 "-----Plugins-Config-----"
 
 "--Vim-Airline--"
-let g:airline#extensions#tabline#enabled = 0 "buffer indicator
-let g:airline_powerline_fonts = 1 "powerline font for airline
-let g:airline_theme='gruvbox'
-let g:airline#extensions#ale#enabled = 1
+"let g:airline#extensions#tabline#enabled = 0 "buffer indicator
+"let g:airline_powerline_fonts = 1 "powerline font for airline
+"let g:airline_theme='gruvbox'
+"let g:airline#extensions#ale#enabled = 1
 "let g:airline_theme='wombat'
+
+"--Vim-Lightline--"
+let g:lightline = {
+  \     'colorscheme': 'wombat',
+  \     'active': {
+  \         'left': [['mode', 'paste' ], ['readonly', 'absolutepath', 'modified']],
+  \         'right': [['lineinfo'], ['percent'], ['filetype']]
+  \     }
+  \ }
 
 "--NerdTree--"
 map <C-n> : NERDTreeToggle<CR>
@@ -224,19 +249,38 @@ function! NERDTreeQuit()
 endfunction
 autocmd WinEnter * call NERDTreeQuit()
 
+"--vim-markdown-preview--"
+let vim_markdown_preview_github=1
+let vim_markdown_preview_hotkey='<C-m>'
+let vim_markdown_preview_toggle=1
+let vim_markdown_preview_browser='Google Chrome'
+let vim_markdown_preview_temp_file=1
+
 "--AckVim--"
 if executable('ag')
   let g:ackprg = 'ag --vimgrep -s'
 endif
 
 "--Deoplete--"
-"let g:deoplete#enable_at_startup = 1
+let g:deoplete#enable_at_startup = 1
+" Disable deoplete when in multi cursor mode
+function! Multiple_cursors_before()
+  let b:deoplete_disable_auto_complete = 1
+endfunction
+function! Multiple_cursors_after()
+  let b:deoplete_disable_auto_complete = 0
+endfunction
+autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 "let g:deoplete#sources = {}
 "let g:deoplete#sources['php'] = ['file', 'buffer', 'tag', 'member', 'padawan']
 "let g:deoplete#sources['html.twig'] = ['file', 'buffer', 'tag', 'member', 'padawan']
 "let g:deoplete#sources['javascript'] = ['file', 'buffer', 'tag', 'member', 'ternjs']
 "let g:deoplete#sources['javascript.jsx'] = ['file', 'buffer', 'tag', 'member', 'ternjs']
 "autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+let g:deoplete#sources#go#gocode_binary = '/Users/m197/go/bin/gocode'
+
+"--Deoplete-go--"
+let g:deoplete#sources#go#pointer = 1
 
 "--DeopletePadawan--"
 "command! StartPadawan call deoplete#sources#padawan#StartServer()
@@ -262,25 +306,27 @@ let g:php_cs_fixer_verbose = 0 "Return the output of command if 1, else an inlin
 "--Vim-Go--"
 let g:go_list_type = "quickfix"
 let g:go_metalinter_autosave = 1
-let g:go_metalinter_autosave_enabled = ['vet', 'golint', 'errcheck']
+"let g:go_metalinter_autosave_enabled = ['vet', 'golint', 'errcheck', 'deadcode']
+let g:go_metalinter_autosave_enabled = ['vet', 'golint', 'deadcode']
 let g:go_auto_type_info = 1
 let g:go_addtags_transform = "snakecase"
 let g:go_auto_sameids = 1
 let g:go_fmt_command = "goimports"
 
 "let g:go_def_mode = "guru"
-"let g:go_echo_command_info = 1
-"let g:go_gocode_autobuild = 0
-"let g:go_gocode_unimported_packages = 0
-"let g:go_autodetect_gopath = 1
+let g:go_echo_command_info = 1
+let g:go_gocode_autobuild = 0
+let g:go_gocode_unimported_packages = 0
+let g:go_autodetect_gopath = 1
 "let g:go_info_mode = "guru"
-"let g:go_highlight_space_tab_error = 0
-"let g:go_highlight_array_whitespace_error = 0
-"let g:go_highlight_trailing_whitespace_error = 0
-"let g:go_highlight_extra_types = 0
-"let g:go_highlight_build_constraints = 1
-"let g:go_highlight_types = 0
-"let g:go_highlight_format_strings = 0
+let g:go_highlight_space_tab_error = 0
+let g:go_highlight_array_whitespace_error = 0
+let g:go_highlight_trailing_whitespace_error = 0
+let g:go_highlight_extra_types = 0
+let g:go_highlight_build_constraints = 1
+let g:go_highlight_types = 0
+let g:go_highlight_format_strings = 0
+let g:go_test_show_name = 1
 augroup go
   autocmd!
 
@@ -325,14 +371,27 @@ augroup END
 "let g:neomake_verbose = 1
 "autocmd! BufWritePost * Neomake
 
+"--vim-delve--"
+let g:delve_backend = "default"
+
 "--Ale--"
 let g:ale_sign_error = 'E'
 let g:ale_sign_warning = 'W'
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_save = 1
+let g:ale_echo_cursor = 0
+let g:ale_fix_on_save = 1
+let g:ale_fixers = {
+\ 'javascript': ['prettier'],
+\ 'javascript.jsx': ['prettier']
+\}
+let g:ale_linters = {
+\ 'javascript': ['eslint'],
+\ 'javascript.jsx': ['eslint']
+\}
 
 "--Vim-Flow--"
-let g:flow#autoclose = '1'
+"let g:flow#autoclose = '1'
 
 "--vim-php-namespace--"
 "set tags+=.tags,.tags.vendors
@@ -345,6 +404,9 @@ let g:flow#autoclose = '1'
 
 "--vim-autotag--"
 "let g:autotagTagsFile=".tags"
+
+"--vim-polyglot--"
+let g:polyglot_disabled = ['go']
 
 "--vim-closetag--"
 let g:closetag_filenames = "*.html,*.xhtml,*.phtml,*.twig,*.js"
@@ -384,3 +446,23 @@ let g:vim_markdown_no_extensions_in_markdown = 1
 
 " ==================== vim-json ====================
 let g:vim_json_syntax_conceal = 0
+
+" Rubocop fix current file
+function! RubocopAutoFix()
+  exe "w"
+  silent exe "!rubocop -a -R % &> /dev/null"
+  silent exe "e %"
+  silent exe "ALEFix"
+endfunction
+nmap <leader>rc :call RubocopAutoFix()<CR>
+
+" ================ vim-rspec =========================
+map <Leader>t :call RunCurrentSpecFile()<CR>
+map <Leader>s :call RunNearestSpec()<CR>
+map <Leader>l :call RunLastSpec()<CR>
+
+" ============== ncm2 ==================
+"autocmd BufEnter * call ncm2#enable_for_buffer()
+" trigger completion on <backspace> and <c-w>
+"imap <backspace> <backspace><Plug>(ncm2_auto_trigger)
+"imap <c-w> <c-w><Plug>(ncm2_auto_trigger)
