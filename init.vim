@@ -16,6 +16,7 @@ Plug 'bronson/vim-trailing-whitespace'
 Plug 'gregsexton/MatchTag', { 'for': ['html', 'htwml.twig'] }
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+"Plug 'Shougo/denite.nvim'
 Plug 'morhetz/gruvbox'
 "Plug 'neomake/neomake'
 "Plug 'jaawerth/neomake-local-eslint-first', { 'for': ['javascript', 'javascript.jsx'] }
