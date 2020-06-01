@@ -1,33 +1,20 @@
 "-----Plugins-----"
 call plug#begin('~/.vim/plugged')
 
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'zchee/deoplete-go', { 'for': 'go', 'do': 'make' }
-Plug 'fishbullet/deoplete-ruby', { 'for': 'ruby' }
-"Plug 'uplus/deoplete-solargraph', { 'for': 'ruby' }
-"Plug 'pbogut/deoplete-padawan', { 'for': ['php', 'html.twig'] }
-"Plug 'arnaud-lb/vim-php-namespace', { 'for': ['php'] }
-"Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern', 'for': ['javascript', 'javascript.jsx'] }
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'ConradIrwin/vim-bracketed-paste'
-"Plug 'Shougo/neosnippet.vim'
-"Plug 'Shougo/neosnippet-snippets'
 Plug 'Yggdroot/indentLine'
 Plug 'bronson/vim-trailing-whitespace'
 Plug 'gregsexton/MatchTag', { 'for': ['html', 'htwml.twig'] }
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-"Plug 'Shougo/denite.nvim'
 Plug 'morhetz/gruvbox'
-"Plug 'neomake/neomake'
-"Plug 'jaawerth/neomake-local-eslint-first', { 'for': ['javascript', 'javascript.jsx'] }
 "Plug 'flowtype/vim-flow', { 'for': ['javascript', 'javascript.jsx'] }
 Plug 'raimondi/delimitmate'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
 Plug 'stephpy/vim-php-cs-fixer', { 'for': 'php' }
 Plug 'tpope/vim-surround'
-"Plug 'vim-airline/vim-airline'
-"Plug 'vim-airline/vim-airline-themes'
 Plug 'itchyny/lightline.vim'
 Plug 'flazz/vim-colorschemes'
 Plug 'mxw/vim-jsx', { 'for': ['javascript.jsx'] }
@@ -47,12 +34,6 @@ Plug 'sebdah/vim-delve', { 'for': 'go' }
 Plug 'sheerun/vim-polyglot'
 
 Plug 'w0rp/ale'
-"Plug 'roxma/nvim-yarp'
-"Plug 'ncm2/ncm2'
-"Plug 'roxma/nvim-completion-manager'
-"Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
-"Plug 'roxma/LanguageServer-php-neovim',  {'do': 'composer install && composer run-script parse-stubs', 'for': 'php' }
-"autocmd FileType php LanguageClientStart
 
 Plug 'vim-ruby/vim-ruby', { 'for': ['ruby', 'haml', 'eruby'] }
 Plug 'tpope/vim-rake', { 'for': 'ruby' }
@@ -65,6 +46,8 @@ Plug 'kana/vim-textobj-user', { 'for': 'ruby' }
 Plug 'nelstrom/vim-textobj-rubyblock', { 'for': 'ruby' }
 
 Plug 'hashivim/vim-terraform'
+
+"Plug 'frazrepo/vim-rainbow'
 
 call plug#end()
 
@@ -86,8 +69,7 @@ let g:indentLine_color_term = 132
 let g:indentLine_faster = 1
 autocmd QuickFixCmdPost *grep* cwindow
 
-set nocompatible
-filetype off
+syntax on
 filetype plugin indent on
 
 set ttyfast
@@ -161,11 +143,11 @@ autocmd! BufWritePre * FixWhitespace
 "--Auto-source-vimrc--"
 augroup autosourcing
     autocmd!
-    autocmd BufWritePost ~/.config/nvim/init.vim source %
+    autocmd BufWritePost ~/.vimrc source %
 augroup END
 
 "--Sync-syntax--"
-autocmd BufEnter * :syntax sync fromstart
+autocmd! BufEnter * :syntax sync fromstart
 
 "--Spacing-file-types--"
 autocmd Filetype javascript setlocal ts=2 sts=2 sw=2
@@ -180,39 +162,32 @@ autocmd Filetype html.twig setlocal ts=2 sts=2 sw=2
 autocmd Filetype html setlocal ts=2 sts=2 sw=2
 autocmd Filetype scala setlocal ts=4 sts=4 sw=4
 
-augroup filetypedetect
-  command! -nargs=* -complete=help Help vertical belowright help <args>
-  autocmd FileType help wincmd L
+"augroup filetypedetect
+  "command! -nargs=* -complete=help Help vertical belowright help <args>
+  "autocmd FileType help wincmd L
 
-  autocmd BufNewFile,BufRead .tmux.conf*,tmux.conf* setf tmux
-  autocmd BufNewFile,BufRead .nginx.conf*,nginx.conf* setf nginx
-  autocmd BufNewFile,BufRead *.hcl setf conf
-  autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
+  "autocmd BufNewFile,BufRead .tmux.conf*,tmux.conf* setf tmux
+  "autocmd BufNewFile,BufRead .nginx.conf*,nginx.conf* setf nginx
+  "autocmd BufNewFile,BufRead *.hcl setf conf
+  "autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
 
-  autocmd BufNewFile,BufRead *.ino setlocal noet ts=4 sw=4 sts=4
-  autocmd BufNewFile,BufRead *.txt setlocal noet ts=4 sw=4
-  autocmd BufNewFile,BufRead *.md setlocal noet ts=4 sw=4
-  autocmd BufNewFile,BufRead *.html setlocal noet ts=4 sw=4
-  autocmd BufNewFile,BufRead *.vim setlocal expandtab shiftwidth=2 tabstop=2
-  autocmd BufNewFile,BufRead *.hcl setlocal expandtab shiftwidth=2 tabstop=2
-  autocmd BufNewFile,BufRead *.sh setlocal expandtab shiftwidth=2 tabstop=2
+  "autocmd BufNewFile,BufRead *.ino setlocal noet ts=4 sw=4 sts=4
+  "autocmd BufNewFile,BufRead *.txt setlocal noet ts=4 sw=4
+  "autocmd BufNewFile,BufRead *.md setlocal noet ts=4 sw=4
+  "autocmd BufNewFile,BufRead *.html setlocal noet ts=4 sw=4
+  "autocmd BufNewFile,BufRead *.vim setlocal expandtab shiftwidth=2 tabstop=2
+  "autocmd BufNewFile,BufRead *.hcl setlocal expandtab shiftwidth=2 tabstop=2
+  "autocmd BufNewFile,BufRead *.sh setlocal expandtab shiftwidth=2 tabstop=2
 
-  autocmd FileType json setlocal expandtab shiftwidth=2 tabstop=2
-  autocmd FileType ruby setlocal expandtab shiftwidth=2 tabstop=2
-augroup END
+  "autocmd FileType json setlocal expandtab shiftwidth=2 tabstop=2
+  "autocmd FileType ruby setlocal expandtab shiftwidth=2 tabstop=2
+"augroup END
 
 "--Command Alias--"
 command! Qt tabclose
 
 
 "-----Plugins-Config-----"
-
-"--Vim-Airline--"
-"let g:airline#extensions#tabline#enabled = 0 "buffer indicator
-"let g:airline_powerline_fonts = 1 "powerline font for airline
-"let g:airline_theme='gruvbox'
-"let g:airline#extensions#ale#enabled = 1
-"let g:airline_theme='wombat'
 
 "--Vim-Lightline--"
 let g:lightline = {
@@ -263,43 +238,6 @@ let vim_markdown_preview_temp_file=1
 if executable('ag')
   let g:ackprg = 'ag --vimgrep -s'
 endif
-
-"--Deoplete--"
-let g:deoplete#enable_at_startup = 1
-" Disable deoplete when in multi cursor mode
-function! Multiple_cursors_before()
-  let b:deoplete_disable_auto_complete = 1
-endfunction
-function! Multiple_cursors_after()
-  let b:deoplete_disable_auto_complete = 0
-endfunction
-autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
-"let g:deoplete#sources = {}
-"let g:deoplete#sources['php'] = ['file', 'buffer', 'tag', 'member', 'padawan']
-"let g:deoplete#sources['html.twig'] = ['file', 'buffer', 'tag', 'member', 'padawan']
-"let g:deoplete#sources['javascript'] = ['file', 'buffer', 'tag', 'member', 'ternjs']
-"let g:deoplete#sources['javascript.jsx'] = ['file', 'buffer', 'tag', 'member', 'ternjs']
-"autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
-"let g:deoplete#sources#go#gocode_binary = '/Users/m197/go/bin/gocode'
-
-"--Deoplete-go--"
-let g:deoplete#sources#go#pointer = 1
-
-"--DeopletePadawan--"
-"command! StartPadawan call deoplete#sources#padawan#StartServer()
-"command! StopPadawan call deoplete#sources#padawan#StopServer()
-"command! RestartPadawan call deoplete#sources#padawan#RestartServer()
-
-"--DeopleteTernJS--"
-"let g:tern_request_timeout = 1
-"let g:tern_show_signature_in_pum = '0'
-
-call deoplete#custom#option('omni_patterns', { 'go': '[^. *\t]\.\w*' })
-call deoplete#initialize()
-
-"--NVim-Completion-Manager--"
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 "--PHP-CS-Fixer--"
 let g:php_cs_fixer_level = "symfony" "which level ?
@@ -366,21 +304,6 @@ augroup END
 "--VimJSX--"
 "let g:jsx_ext_required = 0
 
-"--NeoMake--"
-"let g:neomake_warning_sign = {
-"\ 'text': 'W',
-"\ 'texthl': 'WarningMsg',
-"\ }
-"let g:neomake_error_sign = {
-"\ 'text': 'E',
-"\ 'texthl': 'ErrorMsg',
-"\ }
-"let g:neomake_javascript_enabled_makers = ['eslint']
-"let g:neomake_jsx_enabled_makers = ['eslint']
-"let g:neomake_php_enabled_makers = ['php']
-"let g:neomake_verbose = 1
-"autocmd! BufWritePost * Neomake
-
 "--vim-delve--"
 let g:delve_backend = "default"
 
@@ -400,7 +323,8 @@ let g:ale_set_loclist = 0
 "\}
 let g:ale_linters = {
 \ 'javascript': ['eslint'],
-\ 'javascript.jsx': ['eslint']
+\ 'javascript.jsx': ['eslint'],
+\ 'go': ['gopls']
 \}
 
 "--Vim-Flow--"
@@ -415,11 +339,8 @@ let g:ale_linters = {
 "autocmd FileType php inoremap <Leader>u <Esc>:call IPhpInsertUse()<CR>
 "autocmd FileType php noremap <Leader>u :call PhpInsertUse()<CR>
 
-"--vim-autotag--"
-"let g:autotagTagsFile=".tags"
-
 "--vim-polyglot--"
-let g:polyglot_disabled = ['go']
+"let g:polyglot_disabled = ['go']
 
 "--vim-closetag--"
 let g:closetag_filenames = "*.html,*.xhtml,*.phtml,*.twig,*.js"
@@ -432,21 +353,6 @@ nnoremap <silent> ,th :call neoterm#close()<cr>
 nnoremap <silent> ,tl :call neoterm#clear()<cr>
 " kills the current job (send a <c-c>)
 nnoremap <silent> ,tc :call neoterm#kill()<cr>
-
-"--NeoSnippets--"
-" For conceal markers.
-"if has('conceal')
-  "set conceallevel=2 concealcursor=niv
-"endif
-"imap <C-j>     <Plug>(neosnippet_expand_or_jump)
-"smap <C-j>     <Plug>(neosnippet_expand_or_jump)
-"xmap <C-j>     <Plug>(neosnippet_expand_target)
-"imap <expr><TAB>
-"\ pumvisible() ? "\<C-n>" :
-"\ neosnippet#expandable_or_jumpable() ?
-"\    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-"smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-"\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 
 " ==================== markdown ====================
 let g:vim_markdown_folding_disabled = 1
@@ -474,8 +380,19 @@ map <Leader>t :call RunCurrentSpecFile()<CR>
 map <Leader>s :call RunNearestSpec()<CR>
 map <Leader>l :call RunLastSpec()<CR>
 
-" ============== ncm2 ==================
-"autocmd BufEnter * call ncm2#enable_for_buffer()
-" trigger completion on <backspace> and <c-w>
-"imap <backspace> <backspace><Plug>(ncm2_auto_trigger)
-"imap <c-w> <c-w><Plug>(ncm2_auto_trigger)
+" ========== vim-rainbow ============
+"let g:rainbow_active = 1
+
+" ========== coc.nvim ============
+" Some servers have issues with backup files, see #649.
+set nobackup
+set nowritebackup
+
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
