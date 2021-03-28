@@ -46,6 +46,7 @@ Plug 'kana/vim-textobj-user', { 'for': 'ruby' }
 Plug 'nelstrom/vim-textobj-rubyblock', { 'for': 'ruby' }
 
 Plug 'hashivim/vim-terraform'
+Plug 'kylef/apiblueprint.vim'
 
 "Plug 'frazrepo/vim-rainbow'
 
@@ -189,6 +190,9 @@ command! Qt tabclose
 
 "-----Plugins-Config-----"
 
+"--fzf--"
+let g:fzf_layout = { 'down': '40%' }
+
 "--Vim-Lightline--"
 let g:lightline = {
   \     'colorscheme': 'wombat',
@@ -253,13 +257,15 @@ let g:terraform_align=1
 
 "--Vim-Go--"
 let g:go_list_type = "quickfix"
+let g:go_metalinter_command = "golangci-lint"
 let g:go_metalinter_autosave = 1
 "let g:go_metalinter_autosave_enabled = ['vet', 'golint', 'errcheck', 'deadcode']
-let g:go_metalinter_autosave_enabled = ['vet', 'golint', 'deadcode']
+"let g:go_metalinter_autosave_enabled = ['vet', 'golint']
 let g:go_auto_type_info = 1
 let g:go_addtags_transform = "snakecase"
 let g:go_auto_sameids = 1
 let g:go_fmt_command = "goimports"
+let g:go_jump_to_error = 0
 
 "let g:go_def_mode = "guru"
 let g:go_echo_command_info = 1
